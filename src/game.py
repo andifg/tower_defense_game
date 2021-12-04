@@ -1,95 +1,85 @@
 import pygame
 import os
 
+# Init game
 pygame.init()
+win_height = 500
+win_width = 1000
 win = pygame.display.set_mode((1000, 500))
 
-bg_image = pygame.image.load('src/background.png')
-bg = pygame.transform.scale(bg_image, (1000,500))
-
-# Load images
+# Load and transform images
+background = pygame.transform.scale(pygame.image.load('src/background.png'), (1000,500))
 stationary = pygame.image.load(os.path.join("src" , "Hero","standing.png"))
-
 left = []
 right = []
 for picIndex in range(1,10):
     right.append(pygame.image.load(os.path.join("src" , "Hero", "R" + str(picIndex) + ".png")))
     left.append(pygame.image.load(os.path.join("src" , "Hero", "L" + str(picIndex) + ".png")))
 
+class Hero:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+        self.velvx = 10
+        self.face_right = True
+        self.face_left  = False
+        self.step_index = 0
+
+    def move_hero (self, userInput):
+        if userInput[pygame.K_RIGHT]:
+            self.x += self.velvx
+            self.step_index += 1
+            self.face_left = False
+            self.face_right = True
+            print(f" RIGHT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
+        elif userInput[pygame.K_LEFT]:
+            self.x -= self.velvx
+            self.step_index += 1
+            self.face_left = True
+            self.face_right = False
+            print(f"LEFT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
+        else:
+            self.step_index = 0
+
+    def draw_hero(self, win):
+        print(f"Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
+        # win.blit(right[0], (250 ,250 ))
+        if self.step_index >= 36:
+            self.step_index = 0
+        if self.face_right:
+            win.blit(right[self.step_index//4], (self.x, self.y))
+        elif self.face_left:
+            win.blit(left[self.step_index//4], (self.x, self.y))
+        else:
+            win.blit(stationary, (self.x,self.y))
 
 
-width = 1000
-height = 500
 
-x = 500
-y = 350
-vel_x = 10
-vel_y = 10
-jump = False
-run = True
-move_left = False
-move_right = False
-stepIndex = 0
-i = 0
-
-
+# Draw game
 def draw_game():
-    global stepIndex
-    global i
-    win.blit(bg,(i,0))
-    win.blit(bg,(width+i,0))
+    pass
+    # win.fill((10, 10, 10))
+    win.blit(background, (0,0))
+    player.draw_hero(win)
+    pygame.time.delay(30)
+    pygame.display.update()
 
-    if stepIndex >= 36:
-        stepIndex = 0
-
-    if move_left:
-        win.blit(left[stepIndex//4], (x,y))
-        stepIndex += 1
-    elif move_right:
-        win.blit(right[stepIndex//4], (x,y))
-        stepIndex += 1
-    else:
-        win.blit(stationary, (x,y))
-        stepIndex = 0
-
-    # Make background fluent
-    i -= 1
-    if i == -1000:
-        i = 0
+# Intialize Player
+player = Hero(300, 350)
 
 
+# Mainloop
+run = True
 while run:
 
+    # Input
+    userInput = pygame.key.get_pressed()
+
+    # Quit game
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
 
-    # Movement
-    userInput = pygame.key.get_pressed()
-    if userInput[pygame.K_LEFT] and x > 0:
-        x -= vel_x
-        move_left = True
-
-    elif userInput[pygame.K_RIGHT] and x < width - 50:
-        x += vel_x
-        move_right = True
-
-    else:
-        move_left = False
-        move_right = False
-
-
-    #Jump
-    if jump is False and userInput[pygame.K_SPACE]:
-        jump = True
-    if jump is True:
-        y -= vel_y*3
-        vel_y -= 1
-        if vel_y < -10:
-            jump = False
-            vel_y = 10
-
-    draw_game()
-
-    pygame.time.delay(30)
-    pygame.display.update()
+    if userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]:
+        player.move_hero(userInput)
+        draw_game()
