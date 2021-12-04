@@ -39,17 +39,18 @@ def draw_game():
     win.blit(bg,(i,0))
     win.blit(bg,(width+i,0))
 
-    if stepIndex >= 9:
+    if stepIndex >= 36:
         stepIndex = 0
 
     if move_left:
-        win.blit(left[stepIndex], (x,y))
+        win.blit(left[stepIndex//4], (x,y))
         stepIndex += 1
     elif move_right:
-        win.blit(left[stepIndex], (x,y))
+        win.blit(right[stepIndex//4], (x,y))
         stepIndex += 1
     else:
         win.blit(stationary, (x,y))
+        stepIndex = 0
 
     # Make background fluent
     i -= 1
@@ -69,9 +70,10 @@ while run:
         x -= vel_x
         move_left = True
 
-    elif userInput[pygame.K_RIGHT] and x < width:
+    elif userInput[pygame.K_RIGHT] and x < width - 50:
         x += vel_x
         move_right = True
+
     else:
         move_left = False
         move_right = False
@@ -81,7 +83,7 @@ while run:
     if jump is False and userInput[pygame.K_SPACE]:
         jump = True
     if jump is True:
-        y -= vel_y*5
+        y -= vel_y*3
         vel_y -= 1
         if vel_y < -10:
             jump = False
@@ -89,5 +91,5 @@ while run:
 
     draw_game()
 
-    pygame.time.delay(20)
+    pygame.time.delay(30)
     pygame.display.update()
