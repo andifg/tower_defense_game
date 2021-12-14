@@ -21,9 +21,11 @@ class Hero:
         self.x = x
         self.y = y
         self.velvx = 10
-        self.face_right = True
+        self.velvy = 10
+        self.face_right = False
         self.face_left  = False
         self.step_index = 0
+        self.jump = False
 
     def move_hero (self, userInput):
         if userInput[pygame.K_RIGHT]:
@@ -31,15 +33,30 @@ class Hero:
             self.step_index += 1
             self.face_left = False
             self.face_right = True
-            print(f" RIGHT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
+            # print(f" RIGHT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
         elif userInput[pygame.K_LEFT]:
             self.x -= self.velvx
             self.step_index += 1
             self.face_left = True
             self.face_right = False
-            print(f"LEFT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
+            # print(f"LEFT Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
         else:
+            self.face_left = False
+            self.face_right = False
             self.step_index = 0
+
+
+        if self.jump == False and userInput[pygame.K_SPACE]:
+            self.jump = True
+
+        print(self.jump)
+
+        if self.jump == True:
+            self.y -= self.velvy*4
+            self.velvy -= 1
+            if self.velvy < -10:
+                self.jump = False
+                self.velvy = 10
 
     def draw_hero(self, win):
         print(f"Self x: {self.x} ; Self y: {self.y} ; Self step index: {self.step_index} ; Self face right {self.face_right} ; Self face left {self.face_left}")
@@ -80,6 +97,6 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-    if userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]:
-        player.move_hero(userInput)
-        draw_game()
+    # if userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]:
+    player.move_hero(userInput)
+    draw_game()
