@@ -13,10 +13,14 @@ logger.info("Game started")
 # Load Background
 background = pygame.transform.scale(pygame.image.load('src/Assets/Background/background.png'), (conf.win_width,conf.win_height))
 
+# Load Tower
+tower = pygame.transform.scale(pygame.image.load('src/Assets/Tower/Tower.png'),(200,200))
+
 # Draw game method
 def draw_game():
     # Draw background
     win.blit(background, (0,0))
+    win.blit(tower,(2,260))
 
     # Draw Hero
     player.drawObject(win)
