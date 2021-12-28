@@ -5,6 +5,8 @@ import conf
 # Load Classes
 from Classes.hero import Hero
 from Classes.bullet import Bullet
+from Classes.ork import Ork,processOrks
+
 
 # Load logging
 from logger import logger
@@ -29,6 +31,11 @@ def draw_game():
     for bullet in player.bullets:
         bullet.drawObject(win)
 
+    # Draw each ork
+    for ork in orks:
+        # print(f"${ork.x}; ${ork.y}")
+        ork.drawObject(win)
+
     pygame.time.delay(30)
     pygame.display.update()
 
@@ -39,6 +46,8 @@ win = pygame.display.set_mode((1000, 500))
 # Intialize Player
 player = Hero(300, 350)
 
+# Initialize Enemies
+orks = []
 
 # Mainloop
 run = True
@@ -53,7 +62,7 @@ while run:
             run = False
 
     # Main log info output
-    logger.info(f"PLAYER: x: {player.x} | y: {player.y} | Step index: {player.step_index} | Face right: {player.face_right} | Face left: {player.face_left} | Cooldown: {player.cooldown}|  #-Bullets: {len(player.bullets)}")
+    logger.info(f"PLAYER: x: {player.x} | y: {player.y} | Step index: {player.step_index} | Face right: {player.face_right} | Face left: {player.face_left} | Cooldown: {player.cooldown}|  #-Bullets: {len(player.bullets)} | #-Orks {len(orks)}")
 
     # if userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]:
 
@@ -61,4 +70,8 @@ while run:
     player.move_hero(userInput)
     player.jump_motion(userInput)
     player.shoot(userInput)
+
+    # Move Orks
+    orks = processOrks(orks)
+
     draw_game()
