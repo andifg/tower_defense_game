@@ -25,6 +25,7 @@ class Hero(Base):
         self.jump = False
         self.bullets = []
         self.cooldown = 0
+        self.health = 100
 
     def move_hero (self, userInput):
         if userInput[pygame.K_RIGHT] and self.x < win_width - 40:
@@ -67,7 +68,8 @@ class Hero(Base):
             win.blit(stationary, (self.x,self.y))
 
     def shoot(self, userInput):
-        logger.debug("BULLETS "+ ''.join(str(a) for a in map(lambda x: {"X-Achse":x.x, "Y-Achse":x.y, "Direction": x.direction}, self.bullets)))
+        if logger_bullets:
+            logger.debug("BULLETS "+ ''.join(str(a) for a in map(lambda x: {"X-Achse":x.x, "Y-Achse":x.y, "Direction": x.direction}, self.bullets)))
 
         if self.cooldown > 0:
             self.cooldown -= 1
@@ -83,8 +85,14 @@ class Hero(Base):
 
         # Call function to process the movement of each bullet
         for bullet in self.bullets:
-            if bullet.x > win_width or bullet.x <= 0:
+            if bullet.x > win_width or bullet.x <= 0 or bullet.delete:
+                print(f"delete bullet {bullet.x}")
                 self.bullets.remove(bullet)
                 del bullet
             else:
                 bullet.updateBullet()
+
+    # Function to reduce Health
+    def intersect(self):
+        if logger_intersect:
+            logger.debug(f"ORK-INTERSECT-hero Hero was hit")

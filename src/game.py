@@ -12,10 +12,8 @@ from Classes.ork import Ork,processOrks
 from logger import logger
 logger.info("Game started")
 
-# Load Background
-background = pygame.transform.scale(pygame.image.load('src/Assets/Background/background.png'), (conf.win_width,conf.win_height))
-
-# Load Tower
+# Load Background and Tower
+background = pygame.transform.scale(pygame.image.load('src/Assets/Background/background_new.jpg'), (conf.win_width,conf.win_height))
 tower = pygame.transform.scale(pygame.image.load('src/Assets/Tower/Tower.png'),(200,200))
 
 # Draw game method
@@ -38,6 +36,11 @@ def draw_game():
 
     pygame.time.delay(30)
     pygame.display.update()
+
+def collision(type):
+    for ork in orks:
+        for bullet in player.bullets:
+            ork.intersect_object(bullet,type)
 
 # Init game
 pygame.init()
@@ -62,7 +65,8 @@ while run:
             run = False
 
     # Main log info output
-    logger.info(f"PLAYER: x: {player.x} | y: {player.y} | Step index: {player.step_index} | Face right: {player.face_right} | Face left: {player.face_left} | Cooldown: {player.cooldown}|  #-Bullets: {len(player.bullets)} | #-Orks {len(orks)}")
+    if conf.logger_main:
+        logger.info(f"PLAYER: x: {player.x} | y: {player.y} | Step index: {player.step_index} | Face right: {player.face_right} | Face left: {player.face_left} | Cooldown: {player.cooldown}|  #-Bullets: {len(player.bullets)} | #-Orks {len(orks)}")
 
     # if userInput[pygame.K_RIGHT] or userInput[pygame.K_LEFT]:
 
@@ -70,6 +74,8 @@ while run:
     player.move_hero(userInput)
     player.jump_motion(userInput)
     player.shoot(userInput)
+
+    collision("bullet")
 
     # Move Orks
     orks = processOrks(orks)
