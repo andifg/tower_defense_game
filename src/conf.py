@@ -10,11 +10,18 @@ bullet_height = 7
 ork_width = 250
 ork_height = 149
 
+# Configuration of tower size
+tower_width = 200
+tower_height = 200
+
 # Configuration to slow down the movement of the orks
 ork_move_factor = 3
 
 # Distance between beginning of ork image and middle for hitting animation
-ork_distance_to_middle = 80
+ork_distance_to_middle = 60
+
+# Factor for the animation between the Tower and the orks during attacking the tower
+tower_distance_intersect = 40
 
 # Log configurations
 logger_bullets = False

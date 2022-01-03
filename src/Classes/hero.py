@@ -17,7 +17,7 @@ class Hero(Base):
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.velvx = 10
+        self.velvx = 7
         self.velvy = 10
         self.face_right = False
         self.face_left  = False
@@ -95,4 +95,4 @@ class Hero(Base):
     # Function to reduce Health
     def intersect(self):
         if logger_intersect:
-            logger.debug(f"ORK-INTERSECT-hero Hero was hit")
+            logger.debug(f"ORK-INTERSECT-hero Ork did hit HERO")
