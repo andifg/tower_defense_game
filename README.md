@@ -17,5 +17,5 @@ pip3 install -r requirements.txt
 ```
 ## Execution
 ```
-python src/game.py
+python src/main.py
 ```

@@ -85,12 +85,14 @@ class Hero(Base):
 
         # Call function to process the movement of each bullet
         for bullet in self.bullets:
+            bullet.updateBullet()
+
+    def remove_Bullets(self):
+        for bullet in self.bullets:
             if bullet.x > win_width or bullet.x <= 0 or bullet.delete:
                 print(f"delete bullet {bullet.x}")
                 self.bullets.remove(bullet)
                 del bullet
-            else:
-                bullet.updateBullet()
 
     # Function to reduce Health
     def intersect(self):
