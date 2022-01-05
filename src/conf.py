@@ -17,8 +17,11 @@ tower_height = 200
 # Configuration to slow down the movement of the orks
 ork_move_factor = 3
 
-# Distance between beginning of ork image and middle for hitting animation
-ork_distance_to_middle = 60
+# Distance between beginning of ork image and middle for hitting animation for the bullet
+ork_distance_to_middle = 120
+
+# Factor for the animation between the Hero and the orks during attacking the hero
+hero_to_ork_animation_factor = 60
 
 # Factor for the animation between the Tower and the orks during attacking the tower
 tower_distance_intersect = 40

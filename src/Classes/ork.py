@@ -1,6 +1,5 @@
 import pygame
 import os
-import random
 
 from Classes.base import Base
 from logger import logger
@@ -18,18 +17,6 @@ for picIndex in range(1,10):
     ork_dying.append(pygame.transform.scale(pygame.image.load(os.path.join("src" , "Assets", "Orc", "DIE_0" + str(picIndex) + ".png")),(ork_width,ork_height)))
     ork_attacking.append(pygame.transform.scale(pygame.image.load(os.path.join("src" , "Assets", "Orc", "ATT_0" + str(picIndex) + ".png")),(ork_width,ork_height)))
 
-
-def processOrks(orks):
-    if random.random() < 1 / 100 and len(orks) < 5:
-    # if len(orks)==0:
-        ork = Ork((win_width-50)*ork_move_factor, 280)
-        orks.append(ork)
-
-    for ork in orks:
-        if ork.remove() or ork.dead:
-            orks.remove(ork)
-        ork.move_ork()
-    return orks
 
 class Ork():
     def __init__(self,x,y):
@@ -63,7 +50,7 @@ class Ork():
                     logger.debug(f"ORK-INTERSECT-{type} Ork x1: {self.x//ork_move_factor} | Object x1: {object.x}) | Ork x2 {self.x//ork_move_factor + ork_width} | Object x2: {object.x} | Ork y1: {self.y} | Object y1: {object.y} | Ork y2: {self.y + ork_height}")
 
         if type == "hero" and not self.dying:
-            if (self.x//ork_move_factor + ork_distance_to_middle <= object.x <= (self.x//ork_move_factor + ork_width - 140) and self.y <= object.y and object.y < (self.y + ork_height)):
+            if (self.x//ork_move_factor + hero_to_ork_animation_factor <= object.x <= (self.x//ork_move_factor + ork_width - 140) and self.y <= object.y and object.y < (self.y + ork_height)):
                 if not self.attacking:
                     self.attacking = True
                     self.velvx = 0
